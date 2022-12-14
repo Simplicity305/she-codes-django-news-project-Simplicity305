@@ -10,3 +10,4 @@ class NewsStory(models.Model):
         ) #we want author to be a reference to a specific user - getusermodel -
     pub_date = models.DateTimeField()
     content = models.TextField()
+
