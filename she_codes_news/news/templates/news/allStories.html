@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block content %}
+    
+    <h2>All Stories</h2>
+
+    {% for story in newsStories %}
+
+        {% include "./storyCard.html" with story=story %}   
+        <!-- <h3>{{ story.title }}</h3> -->
+        <p>{{ story.body }}</p>
+    {% endfor %}
+
+{% endblock %}    

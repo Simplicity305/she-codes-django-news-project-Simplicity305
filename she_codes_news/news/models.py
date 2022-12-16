@@ -10,4 +10,7 @@ class NewsStory(models.Model):
         ) #we want author to be a reference to a specific user - getusermodel -
     pub_date = models.DateTimeField()
     content = models.TextField()
+    # Adding a field so a url (for image) can be stored. This is optional as defined by blank=True
+    image_url = models.URLField(blank=True)
+    
 
