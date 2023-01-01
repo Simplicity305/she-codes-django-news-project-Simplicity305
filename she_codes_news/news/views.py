@@ -40,11 +40,11 @@ class AddStoryView(generic.CreateView):
 class AllStoriesView(generic.ListView):
     model = NewsStory 
     template_name = 'news/allStories.html'
-    context_object_name = 'newsStories'
+    context_object_name = 'allStories'
 
     # FUNCTION TO RETRIEVE ALL STORIES 
     def get_queryset(self): #talks about newstory model 
-        '''Return all news stories.'''
+        '''Return all news stories in reverse chronological order.'''
         return NewsStory.objects.all().order_by('-pub_date')
     
     

@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 
-
-
 {% block content %}
     
     <h2>All Stories</h2>
 
-    {% for story in newsStories %}
+    {% if allStories %}
+        {% for story in allStories %}
 
-        {% include "./storyCard.html" with story=story %}   
+            {% include "./storyCard.html" with story=story %}   
         <!-- <h3>{{ story.title }}</h3> -->
-        <p>{{ story.body }}</p>
-    {% endfor %}
+            <p>{{ story.body }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No stories are available.</p>
+    {% endif %} 
 
 {% endblock %}    

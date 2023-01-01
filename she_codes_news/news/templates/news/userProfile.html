@@ -12,11 +12,10 @@
 
     <h2>Profile</h2>
 
-    {% for story in newsStories %}
-
+    {% for story in stories %}
         {% include "./storyCard.html" with story=story %}   
-        <!-- <h3>{{ story.title }}</h3> -->
         <p>{{ story.body }}</p>
     {% endfor %}
+
 
 {% endblock %}    
