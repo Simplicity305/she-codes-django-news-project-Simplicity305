@@ -16,3 +16,4 @@ class CustomUserChangeForm(UserChangeForm): #editing existing profile
         model = CustomUser
         fields = ['username', 'email']
 
+

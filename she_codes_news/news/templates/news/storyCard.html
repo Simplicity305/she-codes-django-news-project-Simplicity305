@@ -6,6 +6,7 @@
             <h3>{{ story.title }}</h3>
             <h4>{{ story.author }}</h4>
             <h4>{{ story.pub_date }}</h4>
+
         </div>
 
         {% if story.image_url %}
@@ -14,6 +15,12 @@
             <img src="https://picsum.photos/600">
         {% endif %}
 
+        <!-- EDIT BUTTON -->
+        <!-- Only visible on story card if the author is the same as the user logged in -->
+        {% if request.user == story.author %}
+        <a href="{% url 'news:editStory' pk=story.pk %}">Edit</a>
+        {% endif %}        
+            
 
     </a>
     

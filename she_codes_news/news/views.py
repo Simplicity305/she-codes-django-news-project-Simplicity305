@@ -1,6 +1,6 @@
 from django.views import generic
 from django.urls import reverse_lazy
-from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404
 from .models import NewsStory
 from .forms import StoryForm
 
@@ -20,6 +20,26 @@ class IndexView(generic.ListView): #class based views
         context['latest_stories'] = NewsStory.objects.all()[:4] #get all news stories but only take the first 4 and those are the latest stories 
         context['all_stories'] = NewsStory.objects.all() #removed this to not show all the stories 
         return context
+
+#-----------------------------------------
+# PAGE SHOWING ALL STORIES
+#-----------------------------------------
+
+#  TODO: Add logic 
+#  - Show only x many stories
+
+# VIEW WHERE ALL STORIES ARE DISPLAYED AND CAN BE SORTED
+class AllStoriesView(generic.ListView):
+    model = NewsStory 
+    template_name = 'news/allStories.html'
+    context_object_name = 'allStories'
+
+    # FUNCTION TO RETRIEVE ALL STORIES 
+    def get_queryset(self): #talks about newstory model 
+        '''Return all news stories in reverse chronological order.'''
+        return NewsStory.objects.all().order_by('-pub_date')
+    
+
 
 #-----------------------------------------
 # PAGE SHOWING A SINGLE STORY
@@ -49,7 +69,7 @@ class AddStoryView(generic.CreateView):
             # return HttpResponseForbidden()
             # return super().form_invalid(form)
         
-            # NOTE: User not logged in won't be able to see the form due to logic in createStory.html, but unsure if this is sufficient to disable the functionality (e.g. could someone use something like Postman?). Tried a redirect for now - as the most customer friendly approach. 
+            # NOTE: User not logged in won't be able to see the form due to logic in createStory.html, but unsure if this is sufficient to disable the functionality (e.g. could someone use something like Postman?). Tried a redirect for now - as a customer friendly approach. 
             # TODO: Look further into other approaches - forbidden response, error message etc - how do others handle these situations? Is this over-engineering? 
             
             
@@ -63,23 +83,24 @@ class AddStoryView(generic.CreateView):
         form.instance.author = self.request.user #logic to set the current user as the author. 
         return super().form_valid(form)
 
+
 #-----------------------------------------
-# PAGE SHOWING ALL STORIES
+#  EDITING A STORY 
 #-----------------------------------------
 
-#  TODO: Add logic 
-#  - Show only x many stories
+class EditStoryView(generic.UpdateView):
+    model = NewsStory
+    form_class = StoryForm
+    template_name = 'news/editStory.html'
+    context_object_name = 'editStory'
+    success_url = reverse_lazy('news:story', kwargs={'pk': self.object.pk})
+    
+    def form_valid(self, form):
+        self.success_url = reverse('news:story', kwargs={'pk': self.obkect.pk})
+        return super().form_valid(form)
+    
+    def get_object(self):
+        return get_object_or_404(NewsStory, pk=self.kwargs.get('pk'))
+    
 
-# VIEW WHERE ALL STORIES ARE DISPLAYED AND CAN BE SORTED
-class AllStoriesView(generic.ListView):
-    model = NewsStory 
-    template_name = 'news/allStories.html'
-    context_object_name = 'allStories'
-
-    # FUNCTION TO RETRIEVE ALL STORIES 
-    def get_queryset(self): #talks about newstory model 
-        '''Return all news stories in reverse chronological order.'''
-        return NewsStory.objects.all().order_by('-pub_date')
-    
-    
-    
+        
