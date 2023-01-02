@@ -23,6 +23,13 @@
         {% endif %}
         {{ story.content|linebreaks }}
     </div>
+
+        <!-- DELETE BUTTON -->
+        <!-- Only visible on story if the author is the same as the user logged in -->
+        {% if request.user == story.author %}
+        <a href="{% url 'news:editStory' pk=story.pk %}">Edit</a>
+        <a href="{% url 'news:deleteStory' pk=story.pk %}">Delete</a>
+        {% endif %}  
 </div>
 
 {% endblock %}

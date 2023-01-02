@@ -4,19 +4,13 @@
 
 {% if request.user.is_authenticated %}
 
-<div id="edit-story">
+<div>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save Changes</button>
+        <input type="submit" value="Save Changes">
     </form>
 </div>
-
-{% else %}
-
-    <a href="{% url 'login' %}"">Login</a> or 
-    <a href="{% url 'users:createAccount' %}">Sign Up</a>
-    to write a new story
 
 {% endif %}    
 

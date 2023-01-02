@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if request.user == story.author %}
+
+<div id="delete-story">
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete the story, '{{story.title}}'?</p>
+        <input type="submit" value="Yes, delete this story">
+    </form>
+</div>
+
+{% endif %}    
+
+{% endblock %}

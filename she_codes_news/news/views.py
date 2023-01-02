@@ -34,11 +34,10 @@ class AllStoriesView(generic.ListView):
     template_name = 'news/allStories.html'
     context_object_name = 'allStories'
 
-    # FUNCTION TO RETRIEVE ALL STORIES 
+    # METHOD TO RETRIEVE ALL STORIES 
     def get_queryset(self): #talks about newstory model 
         '''Return all news stories in reverse chronological order.'''
         return NewsStory.objects.all().order_by('-pub_date')
-    
 
 #-----------------------------------------
 # PAGE SHOWING A SINGLE STORY
@@ -89,11 +88,17 @@ class EditStoryView(generic.UpdateView):
     model = NewsStory
     form_class = StoryForm
     template_name = 'news/editStory.html'
-    context_object_name = 'editStory'
     success_url = reverse_lazy('news:index')
     
     def get_object(self):
         return get_object_or_404(NewsStory, pk=self.kwargs.get('pk'))
     
+#-----------------------------------------
+# DELETE A STORY
+#-----------------------------------------
 
-        
+class DeleteStoryView(generic.DeleteView):
+    model = NewsStory
+    template_name = 'news/deleteStory.html'
+    success_url = reverse_lazy('news:index')
+    context_object_name = 'story'
