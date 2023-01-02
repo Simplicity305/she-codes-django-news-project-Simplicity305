@@ -40,7 +40,6 @@ class AllStoriesView(generic.ListView):
         return NewsStory.objects.all().order_by('-pub_date')
     
 
-
 #-----------------------------------------
 # PAGE SHOWING A SINGLE STORY
 #-----------------------------------------
@@ -59,7 +58,6 @@ class AddStoryView(generic.CreateView):
     context_object_name = 'storyForm'
     template_name = 'news/createStory.html'
     success_url = reverse_lazy('news:index')
-
 
     def form_valid(self, form): #This function gets called when the form is valid - can test submitting a form without anything in it 
         # Guard against anonymous submissions
@@ -83,7 +81,6 @@ class AddStoryView(generic.CreateView):
         form.instance.author = self.request.user #logic to set the current user as the author. 
         return super().form_valid(form)
 
-
 #-----------------------------------------
 #  EDITING A STORY 
 #-----------------------------------------
@@ -93,11 +90,7 @@ class EditStoryView(generic.UpdateView):
     form_class = StoryForm
     template_name = 'news/editStory.html'
     context_object_name = 'editStory'
-    success_url = reverse_lazy('news:story', kwargs={'pk': self.object.pk})
-    
-    def form_valid(self, form):
-        self.success_url = reverse('news:story', kwargs={'pk': self.obkect.pk})
-        return super().form_valid(form)
+    success_url = reverse_lazy('news:index')
     
     def get_object(self):
         return get_object_or_404(NewsStory, pk=self.kwargs.get('pk'))
