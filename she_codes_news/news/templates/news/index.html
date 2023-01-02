@@ -7,17 +7,16 @@
 
 {% block content %}
     
-    <h2>Latest News</h2>
-
+    <div class="index-banner">
     {% if user.is_authenticated %}
         <a href="{% url 'news:newStory' %}">Write New Story</a>
     {% else %}
-        <a href="{% url 'login' %}"">Login</a> or 
-        <a href="{% url 'users:createAccount' %}">Sign Up</a>
-        to write a new story
+        <a href="{% url 'login' %}"">Login  </a><p>or</p><a href="{% url 'users:createAccount' %}">Sign Up</a><p> to write a new story</p>
     {% endif %}
+    </div>
 
-    <a href="{% url 'news:allStories' %}">All Stories</a>
+    <h2>Latest News</h2>
+
 
     <div id="latest-stories">
         {% if latest_stories %} 
@@ -28,5 +27,8 @@
             <p>No stories are available.</p>
         {% endif %}
     </div>
+
+    <h2><a href="{% url 'news:allStories' %}" class="all-stories-link">See all Stories</a></h2>
+
 
 {% endblock %}   

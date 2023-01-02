@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'news/styles.css' %}">
+{% endblock %}
+
 {% block content %}
     
     <h2>All Stories</h2>
 
     {% if allStories %}
         {% for story in allStories %}
-
             {% include "./storyCard.html" with story=story %}   
-        <!-- <h3>{{ story.title }}</h3> -->
             <p>{{ story.body }}</p>
         {% endfor %}
     {% else %}
