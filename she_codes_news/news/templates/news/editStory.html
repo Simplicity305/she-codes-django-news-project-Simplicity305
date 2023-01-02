@@ -1,10 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'news/styles.css' %}">
+{% endblock %}
 {% block content %}
 
 {% if request.user.is_authenticated %}
 
-<div>
+<div class="create-form">
+    <h2>Edit Story</h2>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}

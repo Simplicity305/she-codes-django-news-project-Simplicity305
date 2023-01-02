@@ -17,7 +17,8 @@ class IndexView(generic.ListView): #class based views
 
     def get_context_data(self, **kwargs): 
         context = super().get_context_data(**kwargs)
-        context['latest_stories'] = NewsStory.objects.all()[:4] #get all news stories but only take the first 4 and those are the latest stories 
+        context['latest_stories'] = NewsStory.objects.order_by('-pub_date')[:4] #get all news stories but only take the first 4 and those are the latest stories 
+
         context['all_stories'] = NewsStory.objects.all() #removed this to not show all the stories 
         return context
 

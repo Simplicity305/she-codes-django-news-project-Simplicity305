@@ -11,9 +11,12 @@
 
     <h2>{{ userProfile.username }}: Stories</h2>
 
+    <!-- {% comment %}
     {% if user == request.user %}
         <a href="{% url 'news:newStory' %}">Write New Story</a>
     {% endif %}
+    {% endcomment %} -->
+    <!-- Need to revisit this code ^ not doing what I wanted - leave in for now -->
 
     {% for story in stories %}
         {% include "./storyCard.html" with story=story %}   
