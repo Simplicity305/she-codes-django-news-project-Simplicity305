@@ -6,13 +6,21 @@ from .forms import CustomUserCreationForm
 from news.models import NewsStory
 from django.shortcuts import get_object_or_404
 
+#-----------------------------------------
+# FORM WHERE USER CREATES A NEW ACCOUNT
+#-----------------------------------------
+
+
 class CreateAccountView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'users/createAccount.html'
-
-
-
+    
+    
+#-----------------------------------------
+# PAGE SHOWING A USER'S PROFILE & STORIES
+#-----------------------------------------
+ 
 class UserProfileView(generic.DetailView):
     model = CustomUser
     template_name = 'news/userProfile.html'
@@ -21,6 +29,7 @@ class UserProfileView(generic.DetailView):
     def get_object(self, queryset=None): #TODO understand queryset a bit more
         return get_object_or_404(CustomUser, username=self.kwargs['username'])
     
+    #Revisit this to understand
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.get_object()
@@ -28,6 +37,14 @@ class UserProfileView(generic.DetailView):
         context['stories'] = stories
         return context
     
+    
+    
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     user = self.get_object()
+    #     context['user'] = user
+    #     return context
+        
     #TRYING TO ADD AUTHORS STORIES TO USER PROFILE 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)

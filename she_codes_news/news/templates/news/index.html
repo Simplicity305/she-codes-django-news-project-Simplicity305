@@ -5,13 +5,19 @@
 <link rel="stylesheet" type="text/css" href="{% static 'news/styles.css' %}">
 {% endblock %}
 
-
 {% block content %}
     
     <h2>Latest News</h2>
 
-<a href="{% url 'news:newStory' %}">Write New Story</a>
-<a href="{% url 'news:allStories' %}">All Stories</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'news:newStory' %}">Write New Story</a>
+    {% else %}
+        <a href="{% url 'login' %}"">Login</a> or 
+        <a href="{% url 'users:createAccount' %}">Sign Up</a>
+        to write a new story
+    {% endif %}
+
+    <a href="{% url 'news:allStories' %}">All Stories</a>
 
 
     <div id="latest-stories">
@@ -28,16 +34,6 @@
 
 <!-- print title for the latest stories  -->
 
-    <div id="all-stories">
-        {% if latest_stories %}
-            {% for story in all_stories %}
-                {% include "./storyCard.html" with story=story %}   
 
-                <!-- <p>{{ story.title }}</p> -->
-            {% endfor %}
-        {% else %}
-            <p>No stories are available.</p>
-        {% endif %} <!-- -->
-    </div> 
 
 {% endblock %}   

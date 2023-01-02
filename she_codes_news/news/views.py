@@ -1,10 +1,13 @@
 from django.views import generic
 from django.urls import reverse_lazy
+from django.http import HttpResponseForbidden
 from .models import NewsStory
 from .forms import StoryForm
 
 
-# VIEW FOR THE HOMEPAGE
+#-----------------------------------------
+# HOME PAGE
+#-----------------------------------------
 class IndexView(generic.ListView): #class based views 
     template_name = 'news/index.html'
 
@@ -18,23 +21,54 @@ class IndexView(generic.ListView): #class based views
         context['all_stories'] = NewsStory.objects.all() #removed this to not show all the stories 
         return context
 
-# VIEW FOR A SINGLE STORY
+#-----------------------------------------
+# PAGE SHOWING A SINGLE STORY
+#-----------------------------------------
+
 class StoryView(generic.DetailView): 
     model = NewsStory
     template_name = 'news/story.html'
     context_object_name = 'story'
 
-# VIEW FOR THE FORM TO CREATE A NEW STORY
+#-----------------------------------------
+# FORM WHERE USER CREATES A NEW STORY
+#-----------------------------------------
+
 class AddStoryView(generic.CreateView): 
     form_class = StoryForm
     context_object_name = 'storyForm'
     template_name = 'news/createStory.html'
     success_url = reverse_lazy('news:index')
 
+
     def form_valid(self, form): #This function gets called when the form is valid - can test submitting a form without anything in it 
+        # Guard against anonymous submissions
+        
+        if (self.request.user.is_anonymous):
+            return redirect('login')
+            # return HttpResponseForbidden()
+            # return super().form_invalid(form)
+        
+            # NOTE: User not logged in won't be able to see the form due to logic in createStory.html, but unsure if this is sufficient to disable the functionality (e.g. could someone use something like Postman?). Tried a redirect for now - as the most customer friendly approach. 
+            # TODO: Look further into other approaches - forbidden response, error message etc - how do others handle these situations? Is this over-engineering? 
+            
+            
+    # def form_valid(self, form):
+    #     # Guard against anonymous submissions
+    #     if self.request.user.is_anonymous:
+    #         messages.error(self.request, 'You must be logged in to create a new story.')
+    #         return self.render_to_response(self.get_context_data(form=form))    
+        
+        # Record Author
         form.instance.author = self.request.user #logic to set the current user as the author. 
         return super().form_valid(form)
 
+#-----------------------------------------
+# PAGE SHOWING ALL STORIES
+#-----------------------------------------
+
+#  TODO: Add logic 
+#  - Show only x many stories
 
 # VIEW WHERE ALL STORIES ARE DISPLAYED AND CAN BE SORTED
 class AllStoriesView(generic.ListView):
@@ -46,8 +80,6 @@ class AllStoriesView(generic.ListView):
     def get_queryset(self): #talks about newstory model 
         '''Return all news stories in reverse chronological order.'''
         return NewsStory.objects.all().order_by('-pub_date')
-    
-    
     
     
     
